@@ -96,10 +96,12 @@ def Download(URL, title):
             print("已创建" + DIR + title)
         open(DIR + title + '/' + img_name, 'wb').write(r.content)  # 将内容写入图片
         print("下载完成")
+    else:
+        raise ValueError("status_code={status_code}".format(status_code=r.status_code))
     del r
 
 
-DEF_DIR = "D:/漫画/"
+DEF_DIR = "E:/漫画/"
 def_ip_add = "127.0.0.1"
 def_ip_proxy = "10826"
 START_CHAPTER_CODE = "0"
@@ -110,10 +112,10 @@ START_CHAPTER_CODE = "0"
 # }
 START_PAGE = 1
 if (0 == 0):
-    ip_add = input("请输入代理IP(默认127.0.0.1)：")
+    ip_add = input("请输入代理IP(默认{ip_add})：".format(ip_add=def_ip_add))
     if ip_add == "":
         ip_add = def_ip_add
-    ip_proxy = input("请输入代理端口(默认10826)：")
+    ip_proxy = input("请输入代理端口(默认{ip_proxy})：".format(ip_proxy=def_ip_proxy))
     if ip_proxy == "":
         ip_proxy = def_ip_proxy
     proxies = {
@@ -134,7 +136,8 @@ if (0 == 0):
     s11 = START_CHAPTER + 1;
     print("代理:" + ip_add + "：" + ip_proxy + " 开始章节：" + str(s11) + " 开始页数：" + str(START_PAGE) + " 保存路径：" + DIR)
     # 开始获取章节列表
-    doc = requests.get("http://www.mangabz.com/1864bz/", proxies=proxies)
+    # doc = requests.get("http://www.mangabz.com/1864bz/", proxies=proxies)
+    doc = requests.get("http://www.mangabz.com/92bz/", proxies=proxies)
     html = doc.text
     bf = BeautifulSoup(html, features="html.parser")
     texts = bf.find_all('a', class_='detail-list-form-item')
