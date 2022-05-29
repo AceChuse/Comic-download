@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
+import re
 import os
 from bs4 import BeautifulSoup
 from manhua_python.js_back import Mangabz
@@ -27,22 +28,43 @@ def Download(URL, title):
         raise ValueError("status_code={status_code}".format(status_code=r.status_code))
     del r
 
+
+# 野良神
+# comic_url = "http://www.mangabz.com/293bz/"
+
+# 我推的孩子
+# comic_url = "http://www.mangabz.com/5519bz/"
+
+# 終結的熾天使
+# comic_url = "http://www.mangabz.com/296bz/"
+
 # 無職轉生
-# DEF_DIR = "E:/漫画/無職轉生/"
 # comic_url = "http://www.mangabz.com/1864bz/"
 
 # 藍色的除魔師
-DEF_DIR = "E:/漫画/藍色的除魔師/"
-comic_url = "http://www.mangabz.com/21bz/"
+# comic_url = "http://www.mangabz.com/21bz/"
 
-# 人形之國APOSIMZ
-# DEF_DIR = "E:/漫画/人形之國APOSIMZ/"
-# comic_url = "http://www.mangabz.com/92bz/"
+# 葬送的芙莉蓮
+# comic_url = "http://www.mangabz.com/7020bz/"
+
+# 無能的奈奈
+# comic_url = "http://www.mangabz.com/803bz/"
+
+# 迷宮飯
+# comic_url = "http://www.mangabz.com/706bz/"
+
+# 影宅
+# comic_url = "http://www.mangabz.com/1011bz/"
+
+# 電鋸人
+comic_url = "http://www.mangabz.com/577bz/"
 
 
+DEF_DIR = "E:/漫画/"
 START_CHAPTER_CODE = "0"
 START_PAGE = 1
 if (0 == 0):
+    reverse = False
     START_CHAPTER = input("请输入从倒数第几章开始(默认从最新的章节开始)：")
     if START_CHAPTER != "":
         START_CHAPTER = int(START_CHAPTER) - 1
@@ -59,11 +81,18 @@ if (0 == 0):
     # 开始获取章节列表
     doc = requests.get(comic_url)
     html = doc.text
+
+    name = re.findall("<p class=\"detail-info-title\">.*?</p>", html)[0]
+    name = name[29:-4].strip()
+    DIR = DIR + name + '/'
+    print('DIR=', DIR)
+
     bf = BeautifulSoup(html, features="html.parser")
     texts = bf.find_all('a', class_='detail-list-form-item')
     texts_num = len(texts)
-    for i in range(texts_num - START_CHAPTER - 1,  -1, -1):
-    # for i in range(START_CHAPTER, texts_num):
+    range_chapter = range(START_CHAPTER, texts_num) if reverse else range(texts_num - START_CHAPTER - 1,  -1, -1)
+    # for i in range(texts_num - START_CHAPTER - 1,  -1, -1):
+    for i in range_chapter:
         html = texts[i]
         html = str(html)
         # 获取章节代码

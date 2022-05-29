@@ -59,6 +59,7 @@ class Mangabz:
     """
     def __init__(self, url):
         self.url = url
+        self.max_try = 12
         self.session = requests.Session()
         self.headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
                         "Referer": self.url,
@@ -67,7 +68,19 @@ class Mangabz:
 
     def get_chapter_argv(self):
         print('url', self.url)
-        res = requests.get(self.url, headers=self.headers, timeout=10)
+
+        for i in range(self.max_try):
+            try:
+                res = requests.get(self.url, headers=self.headers, timeout=20)
+                break
+            except Exception as exc:
+                if i + 1 < self.max_try:
+                    print(exc)
+                    time.sleep(2)
+                else:
+                    raise ValueError(exc)
+
+
         mangabz_cid = re.findall("MANGABZ_CID=(.*?);", res.text)[0]
         mangabz_mid = re.findall("MANGABZ_MID=(.*?);", res.text)[0]
         page_total = re.findall("MANGABZ_IMAGE_COUNT=(.*?);", res.text)[0]
@@ -85,10 +98,9 @@ class Mangabz:
         mangabz_cid, mangabz_mid, mangabz_viewsign_dt, mangabz_viewsign, page_total = self.get_chapter_argv()
 
 
-        max_try = 12
         for page in range(1, int(page_total) + 1):
 
-            for i in range(max_try):
+            for i in range(self.max_try):
                 try:
                     js_str = self.get_images_js(page, mangabz_cid, mangabz_mid, mangabz_viewsign_dt, mangabz_viewsign)
                     imagesList = execjs.eval(js_str)
@@ -97,7 +109,7 @@ class Mangabz:
                     Download(imagesList[0], DIR, title, page)
                     break
                 except Exception as exc:
-                    if i + 1 < max_try:
+                    if i + 1 < self.max_try:
                         print(exc)
                         time.sleep(2)
                     else:
