@@ -94,11 +94,11 @@ class Mangabz:
         self.headers["Referer"] = res.url
         return res.text
 
-    def run(self, DIR, title):
+    def run(self, DIR, title, start_page=1):
         mangabz_cid, mangabz_mid, mangabz_viewsign_dt, mangabz_viewsign, page_total = self.get_chapter_argv()
 
 
-        for page in range(1, int(page_total) + 1):
+        for page in range(start_page, int(page_total) + 1):
 
             for i in range(self.max_try):
                 try:

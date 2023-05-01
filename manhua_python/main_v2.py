@@ -33,7 +33,7 @@ def Download(URL, title):
 # comic_url = "http://www.mangabz.com/293bz/"
 
 # 我推的孩子
-# comic_url = "http://www.mangabz.com/5519bz/"
+comic_url = "http://www.mangabz.com/5519bz/"
 
 # 終結的熾天使
 # comic_url = "http://www.mangabz.com/296bz/"
@@ -57,21 +57,42 @@ def Download(URL, title):
 # comic_url = "http://www.mangabz.com/1011bz/"
 
 # 電鋸人
-comic_url = "http://www.mangabz.com/577bz/"
+# comic_url = "http://www.mangabz.com/577bz/"
+
+# 噬魂師
+# comic_url = "http://www.mangabz.com/150bz/"
+
+# SOUL EATER NOT
+# comic_url = "http://www.mangabz.com/173bz/"
+
+# 異世界叔叔
+# comic_url = "http://www.mangabz.com/849bz/"
+
+# 一拳超人
+# comic_url = "http://www.mangabz.com/38bz/"
+
+# 輝夜大小姐想讓我告白 ~天才們的戀愛頭腦戰~
+# comic_url = "http://www.mangabz.com/60bz/"
+
+# 黑色四葉草
+# comic_url = "http://www.mangabz.com/276bz/"
+
 
 
 DEF_DIR = "E:/漫画/"
 START_CHAPTER_CODE = "0"
 START_PAGE = 1
 if (0 == 0):
-    reverse = False
-    START_CHAPTER = input("请输入从倒数第几章开始(默认从最新的章节开始)：")
+    reverse = True
+    START_CHAPTER = input("请输入从第几章开始(默认从最新的章节开始)：")
     if START_CHAPTER != "":
         START_CHAPTER = int(START_CHAPTER) - 1
     else:
         START_CHAPTER = 0
     START_PAGE = input("请输入从第几页开始(默认从第一页开始)：")
-    if START_PAGE == "":
+    if START_PAGE != "":
+        START_PAGE = int(START_PAGE)
+    else:
         START_PAGE = 1
     DIR = input("请输入保存路径(默认" + DEF_DIR + ")：")
     if DIR == "":
@@ -90,7 +111,9 @@ if (0 == 0):
     bf = BeautifulSoup(html, features="html.parser")
     texts = bf.find_all('a', class_='detail-list-form-item')
     texts_num = len(texts)
-    range_chapter = range(START_CHAPTER, texts_num) if reverse else range(texts_num - START_CHAPTER - 1,  -1, -1)
+    texts_num = 35
+    range_chapter = range(texts_num + START_CHAPTER - 1, START_CHAPTER - 1, -1) \
+        if reverse else range(texts_num - START_CHAPTER - 1,  -1, -1)
     # for i in range(texts_num - START_CHAPTER - 1,  -1, -1):
     for i in range_chapter:
         html = texts[i]
@@ -113,4 +136,5 @@ if (0 == 0):
         title = title.rstrip()
         print("正在获取->章节代码：" + chapter_code + " 标题：" + title)
 
-        Mangabz("http://www.mangabz.com/m" + chapter_code + "/").run(DIR=DIR, title=title)
+        Mangabz("http://www.mangabz.com/m" + chapter_code + "/").run(DIR=DIR, title=title, start_page=START_PAGE)
+        START_PAGE = 1
