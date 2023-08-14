@@ -69,7 +69,7 @@ comic_url = "http://www.mangabz.com/5519bz/"
 # comic_url = "http://www.mangabz.com/849bz/"
 
 # 一拳超人
-# comic_url = "http://www.mangabz.com/38bz/"
+comic_url = "http://www.mangabz.com/38bz/"
 
 # 輝夜大小姐想讓我告白 ~天才們的戀愛頭腦戰~
 # comic_url = "http://www.mangabz.com/60bz/"
@@ -77,7 +77,8 @@ comic_url = "http://www.mangabz.com/5519bz/"
 # 黑色四葉草
 # comic_url = "http://www.mangabz.com/276bz/"
 
-
+# 石紀元（Dr.Stone）
+# comic_url = "https://www.mangabz.com/265bz/"
 
 DEF_DIR = "E:/漫画/"
 START_CHAPTER_CODE = "0"
@@ -111,7 +112,7 @@ if (0 == 0):
     bf = BeautifulSoup(html, features="html.parser")
     texts = bf.find_all('a', class_='detail-list-form-item')
     texts_num = len(texts)
-    texts_num = 35
+    texts_num = 1
     range_chapter = range(texts_num + START_CHAPTER - 1, START_CHAPTER - 1, -1) \
         if reverse else range(texts_num - START_CHAPTER - 1,  -1, -1)
     # for i in range(texts_num - START_CHAPTER - 1,  -1, -1):
